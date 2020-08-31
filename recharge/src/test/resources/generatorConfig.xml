@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="conditional">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <property name="autoDelimitKeywords" value="false"/>
+        
+        <plugin type="com.talkweb.mybatis.plugin.Velocity4SrcPlugin">
+            <property name="templatePath" value="${targetProject}\template\src\main\java" />
+            <property name="targetPath" value="${targetProject}\generator" />
+        </plugin>
+        
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.16.119.138:3306/recharge?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8"
+                        userId="root"
+                        password="wovideo@$7LJ((salL">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="test" targetProject="${targetProject}\generator" />
+
+        <!--定义要导出的表，tableName表示表名，domainObjectName表示实体名-->
+<!--         <table tableName="mobile" domainObjectName="Mobile">
+            <property name="comment" value="手机号" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table>
+        <table tableName="mobile_history" domainObjectName="MobileHistory">
+            <property name="comment" value="手机号历史表" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table>
+        <table tableName="recharge_record" domainObjectName="RechargeRecord">
+            <property name="comment" value="充值记录" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table>
+        <table tableName="query_record" domainObjectName="QueryRecord">
+            <property name="comment" value="充值状态查询" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table>
+        <table tableName="sms_record" domainObjectName="SmsRecord">
+            <property name="comment" value="短信发送" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table>
+        <table tableName="thread_mobile" domainObjectName="ThreadMobile">
+            <property name="comment" value="充值线程当前正在处理的手机号记录" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table> -->
+        <table tableName="mobile_sms" domainObjectName="MobileSms">
+            <property name="comment" value="待发短信的手机号" />
+            <property name="targetPackage" value="com.talkweb.unicom.recharge" />
+            <ignoreColumn column="id" />
+            <ignoreColumn column="insert_time" />
+        </table>
+    </context>
+</generatorConfiguration>

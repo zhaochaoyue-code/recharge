@@ -1,0 +1,148 @@
+server:
+  port: 10881
+
+#################注册服务#################
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.16.119.138:8670/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 30
+
+spring:
+  application:
+    name: recharge
+
+#################输出JSON格式#################
+  jackson:
+    dateFormat: yyyy-MM-dd HH:mm:ss
+
+#################http配置（没有调用第三方服务可删除）#################
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+  http:
+    readTimeout: 100000
+    connectTimeout: 100000
+
+#################数据库#################
+  datasource:
+    type: cn.csatv.common.db.datasource.CommonDruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url:  jdbc:mysql://10.0.17.52:3306/recharge?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8
+    username: root
+    password: wovideo@$7LJ((salL
+    initialSize: 0
+    maxActive: 20
+    minIdle: 0
+    maxWait: 60000
+
+#################模板参数配置#################
+  thymeleaf:
+    enable: true
+    cache: true
+    check-template-location: true
+    encoding: UTF-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+  mvc:
+    static-path-pattern: /**
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 10
+  command:
+    default:
+      circuitBreaker:
+        enabled: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+        timeout:
+            enabled: true
+  config:
+    stream:
+      maxConcurrentConnections: 50
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 3000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 3
+  MaxAutoRetries: 1
+
+
+#################接口API#################
+swagger:
+  title: recharge
+  description: recharge
+  version: !!str 1.0.0
+  base-package: com.talkweb.unicom.recharge
+
+#################mybatis配置#################
+mybatis:
+  type-aliases-package: cn.csatv.**.bean
+  mapper-locations: classpath*:/com/talkweb/unicom/**/mapper/*.xml,classpath*:/com/talkweb/unicom/**/mapper/base/*.xml
+  config-location: classpath:/mybatis-config.xml
+
+
+order:
+  activityId: 1
+  spid15: 6
+  spid20: 84
+  spid: 10011
+  activeType: 7
+  orderChannel: TX20_pc
+  
+  client:
+    #domain: http://192.168.1.125:10801
+    #supportBlanace: false
+
+#################科创接口参数#################
+kc:
+  cpid: twowei
+  spid: 10013
+  secret: 7dea1gd5
+  base-url: http://114.255.201.238:8092/videoif
+  tencent-channel: wwjs_tc
+  iqiyi-channel: wwjs_aq
+
+#################短信取号配置#################
+net:
+  cpid: twowei
+  spid: 10011
+  clientType: 3
+  version: 1.0.0
+  secret: 7dea1gd5
+  theme:
+####################充值配置##########################
+rechargeConfig:
+  orderUrl: http://localhost:10801/recharge.do
+#  orderUrl: http://172.16.118.200:10801/recharge.do
+  orderQueryUrl: http://localhost:10801/queryState.do
+#  orderQueryUrl: http://172.16.118.200:10801/queryState.do
+  maxRechargeErrorCount: 10
+  everyRechargeErrorCount: 10
+  expire: 60
+  curMax: 20
+  startHour: 8
+  startMinute: 00
+  startSecond: 00
+  endHour: 19
+  endMinute: 00
+  endSecond: 00
+  flag: 1

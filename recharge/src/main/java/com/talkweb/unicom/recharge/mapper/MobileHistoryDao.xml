@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.MobileHistoryDao">
+
+    <insert id="insertMobileHistory">
+            insert into mobile_history
+            (
+            id, <if test="uid != null and uid != ''">uid</if>
+            <if test="activityId != null and activityId != ''">,activity_id</if>
+            <if test="mobile != null and mobile != ''">,mobile</if>
+            <if test="money != null">,money</if>
+            <if test="kcRechargeId != null and kcRechargeId != ''">,kc_recharge_id</if>
+            <if test="kcRechargeStatus != null">,kc_recharge_status</if>
+            <if test="kcQueryId != null and kcQueryId != ''">,kc_query_id</if>
+            <if test="kcQueryStatus != null">,kc_query_status</if>
+            <if test="isFinished != null">,is_finished</if>
+            <if test="processStatus != null">,process_status</if>
+            <if test="rechargeRetryCount != null">,recharge_retry_count</if>
+            <if test="queryRetryCount != null">,query_retry_count</if>
+            <if test="smsRetryCount != null">,sms_retry_count</if>
+            <if test="lastRechargTime != null">,last_recharg_time</if>
+            <if test="lastQueryTime != null">,last_query_time</if>
+            <if test="lastSmsTime != null">,last_sms_time</if>
+            <if test="rechargeExceptionMsg != null and rechargeExceptionMsg != ''">,recharge_exception_msg</if>
+            <if test="queryExceptionMsg != null and queryExceptionMsg != ''">,query_exception_msg</if>
+            <if test="smsExceptionMsg != null and smsExceptionMsg != ''">,sms_exception_msg</if>
+
+            )
+            value
+                (
+                #{id}, <if test="uid != null and uid != ''">#{uid}</if>
+                <if test="activityId != null and activityId != ''">,#{activityId}</if>
+                <if test="mobile != null and mobile != ''">,#{mobile}</if>
+                <if test="money != null">,#{money}</if>
+                <if test="kcRechargeId != null and kcRechargeId != ''">,#{kcRechargeId}</if>
+                <if test="kcRechargeStatus != null">,#{kcRechargeStatus}</if>
+                <if test="kcQueryId != null and kcQueryId != ''">,#{kcQueryId}</if>
+                <if test="kcQueryStatus != null">,#{kcQueryStatus}</if>
+                <if test="isFinished != null">,#{isFinished}</if>
+                <if test="processStatus != null">,#{processStatus}</if>
+                <if test="rechargeRetryCount != null">,#{rechargeRetryCount}</if>
+                <if test="queryRetryCount != null">,#{queryRetryCount}</if>
+                <if test="smsRetryCount != null">,#{smsRetryCount}</if>
+                <if test="lastRechargTime != null">,#{lastRechargTime, jdbcType=TIMESTAMP}</if>
+                <if test="lastQueryTime != null">,#{lastQueryTime, jdbcType=TIMESTAMP}</if>
+                <if test="lastSmsTime != null">,#{lastSmsTime, jdbcType=TIMESTAMP}</if>
+                <if test="rechargeExceptionMsg != null and rechargeExceptionMsg != ''">,#{rechargeExceptionMsg}</if>
+                <if test="queryExceptionMsg != null and queryExceptionMsg != ''">,#{queryExceptionMsg}</if>
+                <if test="smsExceptionMsg != null and smsExceptionMsg != ''">,#{smsExceptionMsg}</if>
+    </insert>
+
+</mapper>

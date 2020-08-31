@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.SmsRecordDao">
+
+	<!-- 此文件中不要手工添加任何代码，以免重新运行生成代码时覆盖 -->
+	
+    <resultMap id="resultMap" type="com.talkweb.unicom.recharge.bean.SmsRecord">
+        <result property="activityId" column="activity_id" />
+		<result property="mobileId" column="mobile_id" />		
+    </resultMap>
+
+    <sql id="saveOrUpdateSql">
+        <set>
+            <if test="id != null">id = #{id}, </if>
+            <if test="activityId != null and activityId != ''">activity_id = #{activityId}, </if>
+			<if test="mobileId != null">mobile_id = #{mobileId}, </if>
+			<if test="mobile != null and mobile != ''">mobile = #{mobile}, </if>
+			<if test="content != null and content != ''">content = #{content}, </if>
+			<if test="code != null and code != ''">code = #{code}, </if>
+			<if test="msg != null and msg != ''">msg = #{msg}, </if>
+			<if test="result != null">result = #{result}, </if>			
+        </set>
+    </sql>
+
+    <sql id="exampleWhereSql">
+        <where>
+            <if test="o.id != null"> and id = #{o.id}</if>
+            <if test="o.activityId != null and o.activityId != ''"> and activity_id = #{o.activityId}</if>
+			<if test="o.mobileId != null"> and mobile_id = #{o.mobileId}</if>
+			<if test="o.mobile != null and o.mobile != ''"> and mobile = #{o.mobile}</if>
+			<if test="o.content != null and o.content != ''"> and content = #{o.content}</if>
+			<if test="o.code != null and o.code != ''"> and code = #{o.code}</if>
+			<if test="o.msg != null and o.msg != ''"> and msg = #{o.msg}</if>
+			<if test="o.result != null"> and result = #{o.result}</if>			
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        insert into sms_record
+        <include refid="saveOrUpdateSql"/>
+    </insert>
+    
+    <insert id="insertList" parameterType="list">
+        insert into sms_record
+        (
+            id, <if test="activityId != null and activityId != ''">activity_id</if>
+			<if test="mobileId != null">,mobile_id</if>
+			<if test="mobile != null and mobile != ''">,mobile</if>
+			<if test="content != null and content != ''">,content</if>
+			<if test="code != null and code != ''">,code</if>
+			<if test="msg != null and msg != ''">,msg</if>
+			<if test="result != null">,result</if>
+		
+        )
+        value
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{id}, <if test="activityId != null and activityId != ''">#{item.activityId}</if>
+			<if test="mobileId != null">,#{item.mobileId}</if>
+			<if test="mobile != null and mobile != ''">,#{item.mobile}</if>
+			<if test="content != null and content != ''">,#{item.content}</if>
+			<if test="code != null and code != ''">,#{item.code}</if>
+			<if test="msg != null and msg != ''">,#{item.msg}</if>
+			<if test="result != null">,#{item.result}</if>
+		
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="Object">
+        update sms_record
+        <include refid="saveOrUpdateSql"/>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="resultMap" parameterType="long">
+        select * from sms_record where id = #{id}
+    </select>
+
+    <select id="findByExample" resultMap="resultMap" parameterType="Object">
+        select * from sms_record
+        <include refid="exampleWhereSql"/>
+        <if test="o.orderBy != null">
+            order by #{o.orderBy}
+        </if>
+    </select>
+    
+    <delete id="removeById" parameterType="long">
+        delete from sms_record where id = #{id}
+    </delete>
+    
+    <delete id="removeByIds" parameterType="list">
+        delete from sms_record where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findAll" resultMap="resultMap">
+        select * from sms_record
+    </select>
+    
+
+</mapper>

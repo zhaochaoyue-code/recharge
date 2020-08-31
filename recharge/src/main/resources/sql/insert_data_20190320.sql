@@ -1,0 +1,3 @@
+INSERT INTO mobile(uid,activity_id,mobile,money) SELECT REPLACE(UUID(), '-', ''),'tencent_activity',mobile,1400 FROM mobile_original_import_excel WHERE id<=3000;
+INSERT INTO mobile(uid,activity_id,mobile,money) SELECT REPLACE(UUID(), '-', ''),'tencent_activity',mobile,1400 FROM mobile_original_import_excel WHERE id>3000;
+INSERT INTO mobile(uid,activity_id,mobile,money) SELECT REPLACE(UUID(), '-', ''),'tencent_activity',mobile,1400 FROM mobile_original_import_excel WHERE id in (11418,11419,11420);

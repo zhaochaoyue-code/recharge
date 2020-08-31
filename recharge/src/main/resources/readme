@@ -1,0 +1,34 @@
+程序启动后
+
+定时器启动的判断
+1.还没手动点击，定时器不需要执行  isPersonFlag
+2.未出现异常不必启动定时器(充值线程还存在不启动) 定时器停止
+3.手动停止之后，定时器应该停止
+4.充值程序异常数量已经超过{30}个，请与邮箱测沟通 定时器停止
+
+启动充值接口
+Result.setPersonFlag(true);
+如果全部正常
+
+正常执行 充值了一批手机号需要停止之后
+修改标志 返回
+ if(Result.isStopFlag() && Result.isFlag()){
+  return;}
+ 异常
+  Result.setFlag(true);
+  每次允许10 个 充值错误了 接口充值线程停止
+  这个时候     定时器启动判断 123 直接进去4
+  执行两次定时器 整个充值 停止下来（包括 接口和定时器）
+  组后一次执行
+   //为了可以再次手动启动， 还原错误数量为0
+              Result.setPersonFlag(false);
+              cacheService.set("totalErrorCount",0);
+              下次执行卡住定时器
+停止充值接口
+
+	    //停止标志 为了定时器控制
+		Result.setStopFlag(true);
+
+        //异常或者充值中停止
+        Result.setFlag(true);
+

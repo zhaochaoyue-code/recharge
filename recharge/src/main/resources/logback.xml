@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- logback 日志框架。配置文件说明：http://logback.qos.ch/manual/index.html -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %green(%-5level) [%15.15thread] %cyan(%15logger{15}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!--当前输出文件-->
+        <file>${log.path:-logs}/recharge.log</file>
+
+        <!--历史记录文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path:-logs}/logs/recharge.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>8000</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%15.15thread] %logger - %msg%n</pattern>
+        </encoder>
+
+        <!--仅记录 ERROR 级别输出-->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+        <!--<level>ERROR</level>-->
+        <!--<onMatch>ACCEPT</onMatch>-->
+        <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="${log.type:-STDOUT}"/>
+    </root>
+
+    <logger name="com.talkweb" level="DEBUG" />
+    <logger name="cn.csatv" level="DEBUG" />
+    <logger name="ch.qos.logback" level="ERROR" />
+
+</configuration>

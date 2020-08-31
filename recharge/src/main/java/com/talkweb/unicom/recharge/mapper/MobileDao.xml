@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.MobileDao">
+
+    <sql id="successUpdateSql">
+        <set>
+            last_query_time = now(),
+<!--            <if test="id != null">id = #{id}, </if>-->
+<!--            <if test="KcQueryStatus != null and KcQueryStatus != ''">kc_query_status = #{KcQueryStatus}, </if>-->
+            <if test="status != null and status != ''">process_status = #{status} </if>
+        </set>
+    </sql>
+
+    <sql id="notSuccessUpdateSql">
+        <set>
+        <if test="status != null and status != ''">process_status = #{status} </if>
+        </set>
+    </sql>
+    <select id="getSomeMobilesToRecharge" resultMap="resultMap">
+        select * from mobile 
+        where is_finished=0 and process_status=0
+        	and recharge_retry_count &lt;= #{maxRechargeRretryCount}
+        ORDER BY insert_time
+        limit #{limitCount}
+    </select>
+
+    <select id="getSomeMobilesToQueryStatus" resultMap="resultMap">
+        select * from mobile
+        where is_finished=0 and process_status=2
+        	and query_retry_count &lt; #{maxQueryRretryCount}
+        	AND UNIX_TIMESTAMP(NOW()) &gt; (UNIX_TIMESTAMP(IFNULL(last_query_time,insert_time)) + POWER(query_retry_count,2)*60)
+        ORDER BY query_retry_count,(UNIX_TIMESTAMP(IFNULL(last_query_time,insert_time)) + POWER(query_retry_count,2)*60)
+        limit #{limitCount}
+    </select>
+    
+    <select id="getSomeMobilesToSendSms" resultMap="resultMap">
+        select * from mobile
+        where is_finished=0 and process_status=4
+        	and sms_retry_count &lt; #{maxSmsRetryCount}
+        ORDER BY last_query_time
+        limit #{limitCount}
+    </select>
+    
+    <update id="updateProcessStatus0">
+        <!-- UPDATE mobile SET process_status=0 WHERE process_status=1 -->
+        UPDATE mobile SET process_status=0 WHERE process_status=1 AND id NOT IN(SELECT id FROM thread_mobile)
+    </update>
+    
+    <update id="updateProcessStatus2">
+        UPDATE mobile SET process_status=2 WHERE process_status=3
+    </update>
+    
+    <update id="updateProcessStatus4">
+        UPDATE mobile SET process_status=4 WHERE process_status=9
+    </update>
+    
+<!--     
+    <update id="getAllMobileToSendMsg">
+        SELECT mobile 
+		FROM mobile 
+		WHERE kc_query_status=2 OR kc_recharge_status=2
+		GROUP BY mobile HAVING(COUNT(*)=5)
+    </update> -->
+
+
+    <select id="findAllMobiles" resultType="String">
+        select id from mobile
+    </select>
+
+    <select id="findAllMobilesList" resultType="com.talkweb.unicom.recharge.bean.Mobile">
+        select * from mobile
+    </select>
+
+    <update id="updateProcessStatusFromOrder">
+        UPDATE mobile
+        <choose>
+            <when test='status == 4'>
+                <include refid="successUpdateSql"/>
+            </when>
+            <when test='status != 4'>
+                <include refid="notSuccessUpdateSql"/>
+            </when>
+        </choose>
+        WHERE mobile = #{mobile}
+    </update>
+
+    <select id="findByUid" resultType="com.talkweb.unicom.recharge.bean.Mobile">
+        select * from mobile where uid = #{uid}
+    </select>
+
+    <delete id="deleteByUid">
+        delete from mobile where uid = #{uid}
+    </delete>
+
+    <select id="getSomeMobilesByActivityIdToSendSms" resultMap="resultMap">
+        select * from mobile
+        where is_finished=0 and process_status=4
+            and activity_id=#{activityid}
+        	and sms_retry_count &lt; #{maxSmsRetryCount}
+        ORDER BY last_query_time
+        limit #{limitCount}
+    </select>
+
+    <select id="selectOne" resultType="com.talkweb.unicom.recharge.bean.Mobile">
+        select * from mobile
+    </select>
+
+    <select id="getALLMobiles" resultMap="resultMap">
+        select * from mobile
+        where is_finished=0 and process_status=4
+        and sms_retry_count &lt; #{maxSmsRetryCount}
+        ORDER BY last_query_time
+    </select>
+
+    <update id="updateProcessStatus0ForNext" parameterType="list">
+        UPDATE mobile SET process_status=0,query_exception_msg='之前漏掉的' WHERE  uid in
+        <foreach collection="mobileUids" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getAllMobilesToRecharge" resultMap="resultMap">
+       <!-- select * from mobile
+        where is_finished=0 and process_status=0
+        	and recharge_retry_count &lt;= #{maxRechargeRretryCount}
+        ORDER BY insert_time -->
+        select * From mobile where DATE_FORMAT(insert_time, '%Y-%m-%d') ='2020-08-05'
+    </select>
+</mapper>

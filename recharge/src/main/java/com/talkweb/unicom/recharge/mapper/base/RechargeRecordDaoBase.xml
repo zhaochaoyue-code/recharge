@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.RechargeRecordDao">
+
+	<!-- 此文件中不要手工添加任何代码，以免重新运行生成代码时覆盖 -->
+	
+    <resultMap id="resultMap" type="com.talkweb.unicom.recharge.bean.RechargeRecord">
+        <result property="activityId" column="activity_id" />
+		<result property="mobileId" column="mobile_id" />
+		<result property="kcId" column="kc_id" />
+		<result property="kcStatus" column="kc_status" />
+		<result property="exceptionMsg" column="exception_msg" />		
+    </resultMap>
+
+    <sql id="saveOrUpdateSql">
+        <set>
+            <if test="id != null">id = #{id}, </if>
+            <if test="activityId != null and activityId != ''">activity_id = #{activityId}, </if>
+			<if test="mobileId != null">mobile_id = #{mobileId}, </if>
+			<if test="mobile != null and mobile != ''">mobile = #{mobile}, </if>
+			<if test="kcId != null and kcId != ''">kc_id = #{kcId}, </if>
+			<if test="kcStatus != null">kc_status = #{kcStatus}, </if>
+			<if test="exceptionMsg != null and exceptionMsg != ''">exception_msg = #{exceptionMsg}, </if>			
+        </set>
+    </sql>
+
+    <sql id="exampleWhereSql">
+        <where>
+            <if test="o.id != null"> and id = #{o.id}</if>
+            <if test="o.activityId != null and o.activityId != ''"> and activity_id = #{o.activityId}</if>
+			<if test="o.mobileId != null"> and mobile_id = #{o.mobileId}</if>
+			<if test="o.mobile != null and o.mobile != ''"> and mobile = #{o.mobile}</if>
+			<if test="o.kcId != null and o.kcId != ''"> and kc_id = #{o.kcId}</if>
+			<if test="o.kcStatus != null"> and kc_status = #{o.kcStatus}</if>
+			<if test="o.exceptionMsg != null and o.exceptionMsg != ''"> and exception_msg = #{o.exceptionMsg}</if>			
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        insert into recharge_record
+        <include refid="saveOrUpdateSql"/>
+    </insert>
+    
+    <insert id="insertList" parameterType="list">
+        insert into recharge_record
+        (
+            id, <if test="activityId != null and activityId != ''">activity_id</if>
+			<if test="mobileId != null">,mobile_id</if>
+			<if test="mobile != null and mobile != ''">,mobile</if>
+			<if test="kcId != null and kcId != ''">,kc_id</if>
+			<if test="kcStatus != null">,kc_status</if>
+			<if test="exceptionMsg != null and exceptionMsg != ''">,exception_msg</if>
+		
+        )
+        value
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{id}, <if test="activityId != null and activityId != ''">#{item.activityId}</if>
+			<if test="mobileId != null">,#{item.mobileId}</if>
+			<if test="mobile != null and mobile != ''">,#{item.mobile}</if>
+			<if test="kcId != null and kcId != ''">,#{item.kcId}</if>
+			<if test="kcStatus != null">,#{item.kcStatus}</if>
+			<if test="exceptionMsg != null and exceptionMsg != ''">,#{item.exceptionMsg}</if>
+		
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="Object">
+        update recharge_record
+        <include refid="saveOrUpdateSql"/>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="resultMap" parameterType="long">
+        select * from recharge_record where id = #{id}
+    </select>
+
+    <select id="findByExample" resultMap="resultMap" parameterType="Object">
+        select * from recharge_record
+        <include refid="exampleWhereSql"/>
+        <if test="o.orderBy != null">
+            order by #{o.orderBy}
+        </if>
+    </select>
+    
+    <delete id="removeById" parameterType="long">
+        delete from recharge_record where id = #{id}
+    </delete>
+    
+    <delete id="removeByIds" parameterType="list">
+        delete from recharge_record where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findAll" resultMap="resultMap">
+        select * from recharge_record
+    </select>
+    
+
+</mapper>

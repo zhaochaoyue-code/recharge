@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM mobile WHERE process_status=2;

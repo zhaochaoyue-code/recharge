@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.ThreadMobileDao">
+
+	<!-- 此文件中不要手工添加任何代码，以免重新运行生成代码时覆盖 -->
+	
+    <resultMap id="resultMap" type="com.talkweb.unicom.recharge.bean.ThreadMobile">
+        <result property="threadName" column="thread_name" />		
+    </resultMap>
+
+    <sql id="saveOrUpdateSql">
+        <set>
+            <if test="id != null">id = #{id}, </if>
+            <if test="threadName != null and threadName != ''">thread_name = #{threadName}, </if>
+			<if test="uid != null and uid != ''">uid = #{uid}, </if>
+			<if test="mobile != null and mobile != ''">mobile = #{mobile}, </if>			
+        </set>
+    </sql>
+
+    <sql id="exampleWhereSql">
+        <where>
+            <if test="o.id != null"> and id = #{o.id}</if>
+            <if test="o.threadName != null and o.threadName != ''"> and thread_name = #{o.threadName}</if>
+			<if test="o.uid != null and o.uid != ''"> and uid = #{o.uid}</if>
+			<if test="o.mobile != null and o.mobile != ''"> and mobile = #{o.mobile}</if>			
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        insert into thread_mobile
+        <include refid="saveOrUpdateSql"/>
+    </insert>
+    
+    <insert id="insertList" parameterType="list">
+        insert into thread_mobile
+        (
+            id, <if test="threadName != null and threadName != ''">thread_name</if>
+			<if test="uid != null and uid != ''">,uid</if>
+			<if test="mobile != null and mobile != ''">,mobile</if>
+		
+        )
+        value
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{id}, <if test="threadName != null and threadName != ''">#{item.threadName}</if>
+			<if test="uid != null and uid != ''">,#{item.uid}</if>
+			<if test="mobile != null and mobile != ''">,#{item.mobile}</if>
+		
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="Object">
+        update thread_mobile
+        <include refid="saveOrUpdateSql"/>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="resultMap" parameterType="long">
+        select * from thread_mobile where id = #{id}
+    </select>
+
+    <select id="findByExample" resultMap="resultMap" parameterType="Object">
+        select * from thread_mobile
+        <include refid="exampleWhereSql"/>
+        <if test="o.orderBy != null">
+            order by #{o.orderBy}
+        </if>
+    </select>
+    
+    <delete id="removeById" parameterType="long">
+        delete from thread_mobile where id = #{id}
+    </delete>
+    
+    <delete id="removeByIds" parameterType="list">
+        delete from thread_mobile where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findAll" resultMap="resultMap">
+        select * from thread_mobile
+    </select>
+    
+
+</mapper>

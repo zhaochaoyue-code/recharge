@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.MobileSmsDao">
+
+	<!-- 此文件中不要手工添加任何代码，以免重新运行生成代码时覆盖 -->
+	
+    <resultMap id="resultMap" type="com.talkweb.unicom.recharge.bean.MobileSms">
+        <result property="activityId" column="activity_id" />
+		<result property="sendStatus" column="send_status" />
+		<result property="exceptionMsg" column="exception_msg" />		
+    </resultMap>
+
+    <sql id="saveOrUpdateSql">
+        <set>
+            <if test="id != null">id = #{id}, </if>
+            <if test="activityId != null and activityId != ''">activity_id = #{activityId}, </if>
+			<if test="mobile != null and mobile != ''">mobile = #{mobile}, </if>
+			<if test="sendStatus != null">send_status = #{sendStatus}, </if>
+			<if test="exceptionMsg != null and exceptionMsg != ''">exception_msg = #{exceptionMsg}, </if>			
+        </set>
+    </sql>
+
+    <sql id="exampleWhereSql">
+        <where>
+            <if test="o.id != null"> and id = #{o.id}</if>
+            <if test="o.activityId != null and o.activityId != ''"> and activity_id = #{o.activityId}</if>
+			<if test="o.mobile != null and o.mobile != ''"> and mobile = #{o.mobile}</if>
+			<if test="o.sendStatus != null"> and send_status = #{o.sendStatus}</if>
+			<if test="o.exceptionMsg != null and o.exceptionMsg != ''"> and exception_msg = #{o.exceptionMsg}</if>			
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        insert into mobile_sms
+        <include refid="saveOrUpdateSql"/>
+    </insert>
+    
+    <insert id="insertList" parameterType="list">
+        insert into mobile_sms
+        (
+            id, <if test="activityId != null and activityId != ''">activity_id</if>
+			<if test="mobile != null and mobile != ''">,mobile</if>
+			<if test="sendStatus != null">,send_status</if>
+			<if test="exceptionMsg != null and exceptionMsg != ''">,exception_msg</if>
+		
+        )
+        value
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{id}, <if test="activityId != null and activityId != ''">#{item.activityId}</if>
+			<if test="mobile != null and mobile != ''">,#{item.mobile}</if>
+			<if test="sendStatus != null">,#{item.sendStatus}</if>
+			<if test="exceptionMsg != null and exceptionMsg != ''">,#{item.exceptionMsg}</if>
+		
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="Object">
+        update mobile_sms
+        <include refid="saveOrUpdateSql"/>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="resultMap" parameterType="long">
+        select * from mobile_sms where id = #{id}
+    </select>
+
+    <select id="findByExample" resultMap="resultMap" parameterType="Object">
+        select * from mobile_sms
+        <include refid="exampleWhereSql"/>
+        <if test="o.orderBy != null">
+            order by #{o.orderBy}
+        </if>
+    </select>
+    
+    <delete id="removeById" parameterType="long">
+        delete from mobile_sms where id = #{id}
+    </delete>
+    
+    <delete id="removeByIds" parameterType="list">
+        delete from mobile_sms where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findAll" resultMap="resultMap">
+        select * from mobile_sms
+    </select>
+    
+
+</mapper>

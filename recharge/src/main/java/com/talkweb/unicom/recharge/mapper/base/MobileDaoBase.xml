@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.talkweb.unicom.recharge.dao.MobileDao">
+
+	<!-- 此文件中不要手工添加任何代码，以免重新运行生成代码时覆盖 -->
+	
+    <resultMap id="resultMap" type="com.talkweb.unicom.recharge.bean.Mobile">
+        <result property="activityId" column="activity_id" />
+		<result property="kcRechargeId" column="kc_recharge_id" />
+		<result property="kcRechargeStatus" column="kc_recharge_status" />
+		<result property="kcQueryId" column="kc_query_id" />
+		<result property="kcQueryStatus" column="kc_query_status" />
+		<result property="isFinished" column="is_finished" />
+		<result property="processStatus" column="process_status" />
+		<result property="rechargeRetryCount" column="recharge_retry_count" />
+		<result property="queryRetryCount" column="query_retry_count" />
+		<result property="smsRetryCount" column="sms_retry_count" />
+		<result property="lastRechargTime" column="last_recharg_time" jdbcType="TIMESTAMP" />
+		<result property="lastQueryTime" column="last_query_time" jdbcType="TIMESTAMP" />
+		<result property="lastSmsTime" column="last_sms_time" jdbcType="TIMESTAMP" />
+		<result property="rechargeExceptionMsg" column="recharge_exception_msg" />
+		<result property="queryExceptionMsg" column="query_exception_msg" />
+		<result property="smsExceptionMsg" column="sms_exception_msg" />		
+    </resultMap>
+
+    <sql id="saveOrUpdateSql">
+        <set>
+            <if test="id != null">id = #{id}, </if>
+            <if test="uid != null and uid != ''">uid = #{uid}, </if>
+			<if test="activityId != null and activityId != ''">activity_id = #{activityId}, </if>
+			<if test="mobile != null and mobile != ''">mobile = #{mobile}, </if>
+			<if test="money != null">money = #{money}, </if>
+			<if test="kcRechargeId != null and kcRechargeId != ''">kc_recharge_id = #{kcRechargeId}, </if>
+			<if test="kcRechargeStatus != null">kc_recharge_status = #{kcRechargeStatus}, </if>
+			<if test="kcQueryId != null and kcQueryId != ''">kc_query_id = #{kcQueryId}, </if>
+			<if test="kcQueryStatus != null">kc_query_status = #{kcQueryStatus}, </if>
+			<if test="isFinished != null">is_finished = #{isFinished}, </if>
+			<if test="processStatus != null">process_status = #{processStatus}, </if>
+			<if test="rechargeRetryCount != null">recharge_retry_count = #{rechargeRetryCount}, </if>
+			<if test="queryRetryCount != null">query_retry_count = #{queryRetryCount}, </if>
+			<if test="smsRetryCount != null">sms_retry_count = #{smsRetryCount}, </if>
+			<if test="lastRechargTime != null">last_recharg_time = #{lastRechargTime, jdbcType=TIMESTAMP}, </if>
+			<if test="lastQueryTime != null">last_query_time = #{lastQueryTime, jdbcType=TIMESTAMP}, </if>
+			<if test="lastSmsTime != null">last_sms_time = #{lastSmsTime, jdbcType=TIMESTAMP}, </if>
+			<if test="rechargeExceptionMsg != null and rechargeExceptionMsg != ''">recharge_exception_msg = #{rechargeExceptionMsg}, </if>
+			<if test="queryExceptionMsg != null and queryExceptionMsg != ''">query_exception_msg = #{queryExceptionMsg}, </if>
+			<if test="smsExceptionMsg != null and smsExceptionMsg != ''">sms_exception_msg = #{smsExceptionMsg}, </if>			
+        </set>
+    </sql>
+
+    <sql id="exampleWhereSql">
+        <where>
+            <if test="o.id != null"> and id = #{o.id}</if>
+            <if test="o.uid != null and o.uid != ''"> and uid = #{o.uid}</if>
+			<if test="o.activityId != null and o.activityId != ''"> and activity_id = #{o.activityId}</if>
+			<if test="o.mobile != null and o.mobile != ''"> and mobile = #{o.mobile}</if>
+			<if test="o.money != null"> and money = #{o.money}</if>
+			<if test="o.kcRechargeId != null and o.kcRechargeId != ''"> and kc_recharge_id = #{o.kcRechargeId}</if>
+			<if test="o.kcRechargeStatus != null"> and kc_recharge_status = #{o.kcRechargeStatus}</if>
+			<if test="o.kcQueryId != null and o.kcQueryId != ''"> and kc_query_id = #{o.kcQueryId}</if>
+			<if test="o.kcQueryStatus != null"> and kc_query_status = #{o.kcQueryStatus}</if>
+			<if test="o.isFinished != null"> and is_finished = #{o.isFinished}</if>
+			<if test="o.processStatus != null"> and process_status = #{o.processStatus}</if>
+			<if test="o.rechargeRetryCount != null"> and recharge_retry_count = #{o.rechargeRetryCount}</if>
+			<if test="o.queryRetryCount != null"> and query_retry_count = #{o.queryRetryCount}</if>
+			<if test="o.smsRetryCount != null"> and sms_retry_count = #{o.smsRetryCount}</if>
+			<if test="o.lastRechargTime != null"> and last_recharg_time = #{o.lastRechargTime, jdbcType=TIMESTAMP}</if>
+			<if test="o.lastQueryTime != null"> and last_query_time = #{o.lastQueryTime, jdbcType=TIMESTAMP}</if>
+			<if test="o.lastSmsTime != null"> and last_sms_time = #{o.lastSmsTime, jdbcType=TIMESTAMP}</if>
+			<if test="o.rechargeExceptionMsg != null and o.rechargeExceptionMsg != ''"> and recharge_exception_msg = #{o.rechargeExceptionMsg}</if>
+			<if test="o.queryExceptionMsg != null and o.queryExceptionMsg != ''"> and query_exception_msg = #{o.queryExceptionMsg}</if>
+			<if test="o.smsExceptionMsg != null and o.smsExceptionMsg != ''"> and sms_exception_msg = #{o.smsExceptionMsg}</if>			
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        insert into mobile
+        <include refid="saveOrUpdateSql"/>
+    </insert>
+    
+    <insert id="insertList" parameterType="list">
+        insert into mobile
+        (
+            id, <if test="uid != null and uid != ''">uid</if>
+			<if test="activityId != null and activityId != ''">,activity_id</if>
+			<if test="mobile != null and mobile != ''">,mobile</if>
+			<if test="money != null">,money</if>
+			<if test="kcRechargeId != null and kcRechargeId != ''">,kc_recharge_id</if>
+			<if test="kcRechargeStatus != null">,kc_recharge_status</if>
+			<if test="kcQueryId != null and kcQueryId != ''">,kc_query_id</if>
+			<if test="kcQueryStatus != null">,kc_query_status</if>
+			<if test="isFinished != null">,is_finished</if>
+			<if test="processStatus != null">,process_status</if>
+			<if test="rechargeRetryCount != null">,recharge_retry_count</if>
+			<if test="queryRetryCount != null">,query_retry_count</if>
+			<if test="smsRetryCount != null">,sms_retry_count</if>
+			<if test="lastRechargTime != null">,last_recharg_time</if>
+			<if test="lastQueryTime != null">,last_query_time</if>
+			<if test="lastSmsTime != null">,last_sms_time</if>
+			<if test="rechargeExceptionMsg != null and rechargeExceptionMsg != ''">,recharge_exception_msg</if>
+			<if test="queryExceptionMsg != null and queryExceptionMsg != ''">,query_exception_msg</if>
+			<if test="smsExceptionMsg != null and smsExceptionMsg != ''">,sms_exception_msg</if>
+		
+        )
+        value
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{id}, <if test="uid != null and uid != ''">#{item.uid}</if>
+			<if test="activityId != null and activityId != ''">,#{item.activityId}</if>
+			<if test="mobile != null and mobile != ''">,#{item.mobile}</if>
+			<if test="money != null">,#{item.money}</if>
+			<if test="kcRechargeId != null and kcRechargeId != ''">,#{item.kcRechargeId}</if>
+			<if test="kcRechargeStatus != null">,#{item.kcRechargeStatus}</if>
+			<if test="kcQueryId != null and kcQueryId != ''">,#{item.kcQueryId}</if>
+			<if test="kcQueryStatus != null">,#{item.kcQueryStatus}</if>
+			<if test="isFinished != null">,#{item.isFinished}</if>
+			<if test="processStatus != null">,#{item.processStatus}</if>
+			<if test="rechargeRetryCount != null">,#{item.rechargeRetryCount}</if>
+			<if test="queryRetryCount != null">,#{item.queryRetryCount}</if>
+			<if test="smsRetryCount != null">,#{item.smsRetryCount}</if>
+			<if test="lastRechargTime != null">,#{item.lastRechargTime, jdbcType=TIMESTAMP}</if>
+			<if test="lastQueryTime != null">,#{item.lastQueryTime, jdbcType=TIMESTAMP}</if>
+			<if test="lastSmsTime != null">,#{item.lastSmsTime, jdbcType=TIMESTAMP}</if>
+			<if test="rechargeExceptionMsg != null and rechargeExceptionMsg != ''">,#{item.rechargeExceptionMsg}</if>
+			<if test="queryExceptionMsg != null and queryExceptionMsg != ''">,#{item.queryExceptionMsg}</if>
+			<if test="smsExceptionMsg != null and smsExceptionMsg != ''">,#{item.smsExceptionMsg}</if>
+		
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="Object">
+        update mobile
+        <include refid="saveOrUpdateSql"/>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="resultMap" parameterType="long">
+        select * from mobile where id = #{id}
+    </select>
+
+    <select id="findByExample" resultMap="resultMap" parameterType="Object">
+        select * from mobile
+        <include refid="exampleWhereSql"/>
+        <if test="o.orderBy != null">
+            order by #{o.orderBy}
+        </if>
+    </select>
+    
+    <delete id="removeById" parameterType="long">
+        delete from mobile where id = #{id}
+    </delete>
+    
+    <delete id="removeByIds" parameterType="list">
+        delete from mobile where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findAll" resultMap="resultMap">
+        select * from mobile
+    </select>
+    
+
+</mapper>
